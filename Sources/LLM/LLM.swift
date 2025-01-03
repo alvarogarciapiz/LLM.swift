@@ -164,6 +164,18 @@ open class LLM: ObservableObject {
         historyLimit: Int = 8,
         maxTokenCount: Int32 = 2048
     ) {
+
+        print("Initializing LLM with the following parameters:")
+        print("URL Path: \(url.path)")
+        print("Stop Sequence: \(template.stopSequence ?? "nil")")
+        print("History: \(history)")
+        print("Seed: \(seed)")
+        print("topK: \(topK)")
+        print("topP: \(topP)")
+        print("Temperature: \(temp)")
+        print("History Limit: \(historyLimit)")
+        print("Max Token Count: \(maxTokenCount)")
+
         self.init(
             from: url.path,
             stopSequence: template.stopSequence,
