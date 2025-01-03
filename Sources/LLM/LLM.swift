@@ -361,7 +361,7 @@ open class LLM: ObservableObject {
             }
             update(nil)
             let trimmedOutput = output.trimmingCharacters(in: .whitespacesAndNewlines)
-            await setOutput(to: output)
+            await setOutput(to: trimmedOutput.isEmpty ? "..." : trimmedOutput)
             return output
         }
     }
