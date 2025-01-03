@@ -99,9 +99,9 @@ open class LLM: ObservableObject {
         llama_free_model(model)
     }
     
-public convenience init(
+    public convenience init(
         from url: URL,
-        template: Template,
+        stopSequence: String? = nil,
         history: [Chat] = [],
         seed: UInt32 = .random(in: .min ... .max),
         topK: Int32 = 40,
@@ -112,7 +112,7 @@ public convenience init(
     ) {
         self.init(
             from: url.path,
-            stopSequence: template.stopSequence,
+            stopSequence: stopSequence,
             history: history,
             seed: seed,
             topK: topK,
@@ -121,9 +121,7 @@ public convenience init(
             historyLimit: historyLimit,
             maxTokenCount: maxTokenCount
         )
-        self.preprocess = template.preprocess
-        self.template = template
-    }
+    } 
     
     public convenience init(
         from huggingFaceModel: HuggingFaceModel,
@@ -351,7 +349,7 @@ public convenience init(
             }
             update(nil)
             let trimmedOutput = output.trimmingCharacters(in: .whitespacesAndNewlines)
-            await setOutput(to: trimmedOutput.isEmpty ? "..." : trimmedOutput)
+            await setOutput(to: output)
             return output
         }
     }
