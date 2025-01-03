@@ -99,29 +99,47 @@ open class LLM: ObservableObject {
         llama_free_model(model)
     }
     
-    public convenience init(
-        from url: URL,
-        stopSequence: String? = nil,
-        history: [Chat] = [],
-        seed: UInt32 = .random(in: .min ... .max),
-        topK: Int32 = 40,
-        topP: Float = 0.95,
-        temp: Float = 0.8,
-        historyLimit: Int = 8,
-        maxTokenCount: Int32 = 2048
-    ) {
-        self.init(
-            from: url.path,
-            stopSequence: stopSequence,
-            history: history,
-            seed: seed,
-            topK: topK,
-            topP: topP,
-            temp: temp,
-            historyLimit: historyLimit,
-            maxTokenCount: maxTokenCount
-        )
-    } 
+public convenience init(
+    from url: URL,
+    template: Template,
+    history: [Chat] = [],
+    seed: UInt32 = .random(in: .min ... .max),
+    topK: Int32 = 40,
+    topP: Float = 0.95,
+    temp: Float = 0.8,
+    historyLimit: Int = 8,
+    maxTokenCount: Int32 = 2048
+) {
+    // Debugging: Print parameter values
+    print("Initializing LLM with the following parameters:")
+    print("URL Path: \(url.path)")
+    print("Stop Sequence: \(template.stopSequence ?? "nil")")
+    print("History: \(history)")
+    print("Seed: \(seed)")
+    print("topK: \(topK)")
+    print("topP: \(topP)")
+    print("Temperature: \(temp)")
+    print("History Limit: \(historyLimit)")
+    print("Max Token Count: \(maxTokenCount)")
+
+    self.init(
+        from: url.path,
+        stopSequence: template.stopSequence,
+        history: history,
+        seed: seed,
+        topK: topK,
+        topP: topP,
+        temp: temp,
+        historyLimit: historyLimit,
+        maxTokenCount: maxTokenCount
+    )
+    
+    self.preprocess = template.preprocess
+    self.template = template
+
+    // Debugging: Confirm initialization
+    print("LLM initialized successfully with the provided template and parameters.")
+}
     
     public convenience init(
         from huggingFaceModel: HuggingFaceModel,
